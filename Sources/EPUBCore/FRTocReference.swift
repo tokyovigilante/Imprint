@@ -8,7 +8,7 @@
 
 import Foundation
 
-open class FRTocReference: NSObject {
+open class FRTocReference {
     var children: [FRTocReference]!
 
     public var title: String!
@@ -31,4 +31,11 @@ open class FRTocReference: NSObject {
 
 func ==(lhs: FRTocReference, rhs: FRTocReference) -> Bool {
     return lhs.title == rhs.title && lhs.fragmentID == rhs.fragmentID
+}
+
+extension FRTocReference: CustomStringConvertible {
+
+    public var description: String {
+        return "\(title): \(fragmentID)"
+    }
 }

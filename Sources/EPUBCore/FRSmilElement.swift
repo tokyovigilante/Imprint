@@ -102,12 +102,16 @@ class FRSmilElement: NSObject {
     // MARK: - Audio clip info
 
     func clipBegin() -> Double {
-        let val = audioElement().getAttribute("clipBegin", defaultVal: "")
-        return val!.clockTimeToSeconds()
+        guard let val = audioElement().getAttribute("clipBegin", defaultVal: "") else {
+            return 0
+        }
+        return val.clockTimeToSeconds()
     }
 
     func clipEnd() -> Double {
-        let val = audioElement().getAttribute("clipEnd", defaultVal: "")
-        return val!.clockTimeToSeconds()
+        guard let val = audioElement().getAttribute("clipEnd", defaultVal: "") else {
+            return 0
+        }
+        return val.clockTimeToSeconds()
     }
 }
