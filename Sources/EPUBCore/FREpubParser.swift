@@ -6,15 +6,10 @@
 //  Copyright (c) 2015 Folio Reader. All rights reserved.
 //
 
-import UIKit
-import AEXML
-#if COCOAPODS
-import SSZipArchive
-#else
-import ZipArchive
-#endif
+import Foundation
+import CMinizip
 
-class FREpubParser: NSObject, SSZipArchiveDelegate {
+class FREpubParser {
 
     let book = FRBook()
     private var resourcesBasePath = ""

@@ -6,14 +6,14 @@
 //  Copyright (c) 2015 Folio Reader. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-open class FRResource: NSObject {
+open class FRResource {
     var id: String!
     var properties: String?
     var mediaType: MediaType!
     var mediaOverlay: String?
-    
+
     public var href: String!
     public var fullHref: String!
 

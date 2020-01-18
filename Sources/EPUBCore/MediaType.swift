@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Folio Reader. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 /**
  MediaType is used to tell the type of content a resource is.

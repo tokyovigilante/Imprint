@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Folio Reader. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 open class FRTocReference: NSObject {
     var children: [FRTocReference]!
@@ -14,7 +14,7 @@ open class FRTocReference: NSObject {
     public var title: String!
     public var resource: FRResource?
     public var fragmentID: String?
-    
+
     convenience init(title: String, resource: FRResource?, fragmentID: String = "") {
         self.init(title: title, resource: resource, fragmentID: fragmentID, children: [FRTocReference]())
     }

@@ -6,7 +6,7 @@
 //
 //
 
-import UIKit
+import Foundation
 
 // Media Overlay Documentation
 // http://www.idpf.org/accessibility/guidelines/content/overlays/overview.php#mo005-samp

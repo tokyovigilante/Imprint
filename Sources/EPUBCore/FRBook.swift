@@ -7,14 +7,14 @@
 //  Copyright (c) 2015 Folio Reader. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-open class FRBook: NSObject {
+open class FRBook {
     var metadata = FRMetadata()
     var spine = FRSpine()
     var smils = FRSmils()
     var version: Double?
-    
+
     public var opfResource: FRResource!
     public var tocResource: FRResource?
     public var uniqueIdentifier: String?
@@ -79,7 +79,7 @@ open class FRBook: NSObject {
     func smilFile(forId ID: String) -> FRSmilFile? {
         return smilFileForResource(resources.findById(ID))
     }
-    
+
     // @NOTE: should "#" be automatically prefixed with the ID?
     func duration(for ID: String) -> String? {
         return metadata.find(byProperty: "media:duration", refinedBy: ID)?.value

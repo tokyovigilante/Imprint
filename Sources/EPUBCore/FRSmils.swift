@@ -7,7 +7,7 @@
 //
 
 
-import UIKit
+import Foundation
 
 struct FRSmilFile {
     var resource: FRResource
