@@ -18,7 +18,7 @@ struct Spine {
     }
 }
 
-class FRSpine: NSObject {
+class FRSpine {
     var pageProgressionDirection: String?
     var spineReferences = [Spine]()
 
