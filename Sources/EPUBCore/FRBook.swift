@@ -11,7 +11,7 @@ import Foundation
 
 open class FRBook {
     var metadata = FRMetadata()
-    var spine = FRSpine()
+    public var spine = FRSpine()
     var smils = FRSmils()
     var version: Double?
 

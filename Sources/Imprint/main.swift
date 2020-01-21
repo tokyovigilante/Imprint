@@ -2,6 +2,7 @@ import EPUBCore
 import Foundation
 import Harness
 import LoggerAPI
+import ZipReader
 
 try! ConsoleManager.configureLogging(.debug, detailed: true, destinations: [.console], async: false)
 
@@ -37,5 +38,15 @@ do {
     exit(-1)
 }
 
-Log.info(String(describing: book.tableOfContents))
-
+let timer = PrecisionTimer()
+do {
+    for spineItem in book.spine.spineReferences {
+        let zipResource = try reader.readResource(path: spineItem.resource.fullHref)
+        guard let htmlString = String(data: zipResource.data, encoding: .utf8) else {
+            Log.error("Blown it")
+            exit(-1)
+        }
+        //Log.info(htmlString)
+    }
+}
+Log.info("Took \(timer.elapsed) sec")

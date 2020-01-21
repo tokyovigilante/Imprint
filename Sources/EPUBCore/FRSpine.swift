@@ -8,9 +8,9 @@
 
 import Foundation
 
-struct Spine {
-    var linear: Bool
-    var resource: FRResource
+public struct Spine {
+    public var linear: Bool
+    public var resource: FRResource
 
     init(resource: FRResource, linear: Bool = true) {
         self.resource = resource
@@ -18,11 +18,12 @@ struct Spine {
     }
 }
 
-class FRSpine {
+public class FRSpine {
     var pageProgressionDirection: String?
-    var spineReferences = [Spine]()
 
-    var isRtl: Bool {
+    public var spineReferences = [Spine]()
+
+    public var isRtl: Bool {
         if let pageProgressionDirection = pageProgressionDirection , pageProgressionDirection == "rtl" {
             return true
         }

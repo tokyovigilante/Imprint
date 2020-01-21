@@ -56,6 +56,11 @@ public class FREpubParser {
         return image
     }
 
+    public func readResource (path: String) throws -> ZippedFile {
+        return try _zipReader.file(path: path)
+
+    }
+
     /// Parse the book title from an epub file.
     ///
     /// - Parameters:

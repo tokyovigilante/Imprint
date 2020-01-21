@@ -9,10 +9,10 @@
 import Foundation
 
 open class FRResource {
-    var id: String!
-    var properties: String?
-    var mediaType: MediaType!
-    var mediaOverlay: String?
+    public var id: String!
+    public var properties: String?
+    public var mediaType: MediaType!
+    public var mediaOverlay: String?
 
     public var href: String!
     public var fullHref: String!
