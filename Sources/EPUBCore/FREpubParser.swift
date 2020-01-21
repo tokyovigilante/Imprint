@@ -24,8 +24,11 @@ public class FREpubParser {
 
     public init? (bookURL url: URL) {
         _url = url
-        guard let reader = ZipReader(url: url) else {
-            Log.error("Could not open \(url)")
+        let reader: ZipReader
+        do {
+            reader = try ZipReader(url: url)
+        } catch let error {
+            Log.error("Could not open \(url): \(error.localizedDescription)")
             return nil
         }
         _zipReader = reader
@@ -105,9 +108,7 @@ public class FREpubParser {
     /// - Parameter bookBasePath: The base book path
     /// - Throws: `FolioReaderError`
     private func readContainer() throws {
-        guard let containerFile = _zipReader.file(path: "META-INF/container.xml") else {
-            throw FolioReaderError.errorInContainer
-        }
+        let containerFile = try _zipReader.file(path: "META-INF/container.xml")
         let xmlDoc = try AEXMLDocument(xml: containerFile.data)
         let opfResource = FRResource()
         opfResource.href = xmlDoc.root["rootfiles"]["rootfile"].attributes["full-path"]
@@ -129,9 +130,7 @@ public class FREpubParser {
         }
         var identifier: String?
 
-        guard let opfFile = _zipReader.file(path: opfPath) else {
-            throw FolioReaderError.errorInOpf
-        }
+        let opfFile = try _zipReader.file(path: opfPath)
         let xmlDoc = try AEXMLDocument(xml: opfFile.data)
 
         // Base OPF info
@@ -210,10 +209,14 @@ public class FREpubParser {
     ///
     /// - Parameter resource: A `FRResource` to read the smill
     private func readSmilFile(_ resource: FRResource) {
+        var smilZipFile: ZippedFile
         do {
-            guard let smilZipFile = _zipReader.file(path: resource.fullHref) else {
-                throw FolioReaderError.errorInOpf
-            }
+            smilZipFile = try _zipReader.file(path: resource.fullHref)
+        } catch {
+            print("Cannot read .smil file: " + resource.href)
+            return
+        }
+        do {
             let smilData = smilZipFile.data
             var smilFile = FRSmilFile(resource: resource)
             let xmlDoc = try AEXMLDocument(xml: smilData)
@@ -256,22 +259,15 @@ public class FREpubParser {
         var tocItems: [AEXMLElement]?
         guard let tocResource = book.tocResource else { return tableOfContent }
         let tocPath = _resourcesBasePath.appendingPathComponent(tocResource.href)
-
+        let tocFile: ZippedFile
         do {
+            tocFile = try _zipReader.file(path: tocPath)
+            let xmlDoc = try AEXMLDocument(xml: tocFile.data)
             if tocResource.mediaType == MediaType.ncx {
-                guard let ncxFile = _zipReader.file(path: tocPath) else {
-                    throw FolioReaderError.errorInOpf
-                }
-                let xmlDoc = try AEXMLDocument(xml: ncxFile.data)
                 if let itemsList = xmlDoc.root["navMap"]["navPoint"].all {
                     tocItems = itemsList
                 }
             } else {
-                guard let tocFile = _zipReader.file(path: tocPath) else {
-                    throw FolioReaderError.errorInOpf
-                }
-                let xmlDoc = try AEXMLDocument(xml: tocFile.data)
-
                 if let nav = xmlDoc.root["body"]["nav"].first, let itemsList = nav["ol"]["li"].all {
                     tocItems = itemsList
                 } else if let nav = findNavTag(xmlDoc.root["body"]), let itemsList = nav["ol"]["li"].all {

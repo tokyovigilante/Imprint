@@ -7,7 +7,6 @@ let package = Package(
     products: [
         .executable(name: "Imprint", targets: ["Imprint"]),
         .library(name: "EPUBCore", targets: ["EPUBCore"]),
-        .library(name: "ZipReader", targets: ["ZipReader"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -15,6 +14,8 @@ let package = Package(
         .package(url: "https://github.com/tadija/AEXML", .branch("master")),
         .package(url: "https://github.com/tokyovigilante/HeliumLogger", .branch("master")),
         .package(url: "https://github.com/tokyovigilante/Harness", .branch("master")),
+        .package(url: "https://github.com/tokyovigilante/ZipReader", .branch("master")),
+        .package(url: "https://github.com/tokyovigilante/Airframe", .branch("master")),
     ],
     targets: [
         .target(
@@ -24,23 +25,9 @@ let package = Package(
             name: "EPUBCore",
             dependencies: [
                 "ZipReader",
+                "Harness",
                 "AEXML",
             ]),
-        .target(
-            name: "ZipReader",
-            dependencies: [
-                "CMinizip",
-                "CShims",
-                "HeliumLogger",
-                "Harness",
-            ]),
-        .target(
-            name: "CShims",
-            dependencies: []
-        ),
-        .systemLibrary(
-            name: "CMinizip",
-            pkgConfig: "minizip"),
         .testTarget(
             name: "ImprintTests",
             dependencies: ["Imprint"]),
