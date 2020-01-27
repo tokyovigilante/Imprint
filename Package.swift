@@ -18,9 +18,21 @@ let package = Package(
         .package(url: "https://github.com/tokyovigilante/Airframe", .branch("master")),
     ],
     targets: [
+        .systemLibrary(
+            name: "CWebKitWPEFDO",
+            pkgConfig: "wpebackend-fdo-1.0"
+        ),
+        .systemLibrary(
+            name: "CWebKitWPE",
+            pkgConfig: "wpe-webkit-1.0"
+        ),
         .target(
             name: "Imprint",
-            dependencies: ["EPUBCore"]),
+            dependencies: [
+                "EPUBCore",
+                "CWebKitWPEFDO",
+                "CWebKitWPE",
+                "Airframe"]),
         .target(
             name: "EPUBCore",
             dependencies: [

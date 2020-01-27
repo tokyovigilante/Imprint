@@ -1,0 +1,5 @@
+module CWebKitWPE {
+    umbrella header "cwebkitwpe.h"
+    export *
+    link "WPEWebKit-1.0"
+}

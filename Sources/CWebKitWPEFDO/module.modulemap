@@ -1,0 +1,5 @@
+module CWebKitWPEFDO {
+    umbrella header "cwpefdo.h"
+    export *
+    link "WPEBackend-fdo-1.0"
+}
