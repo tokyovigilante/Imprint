@@ -1,0 +1,5 @@
+module CGTK {
+    umbrella header "cgtk.h"
+    export *
+    link "gtk-3"
+}
