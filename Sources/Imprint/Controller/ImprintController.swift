@@ -4,6 +4,15 @@ import Harness
 import LoggerAPI
 import ZipReader
 
+fileprivate var displayCSS = """
+    body {
+        width: 700px;
+        column-width: 700px;
+        margin: 0 auto;
+        line-height: 1.5em;
+    }
+"""
+
 class ImprintController {
 
     private let _uiController: UIController
@@ -47,20 +56,29 @@ class ImprintController {
             exit(-1)
         }
 
-        let timer = PrecisionTimer()
-        do {
-            for spineItem in book.spine.spineReferences {
-                let zipResource = try! reader.readResource(path: spineItem.resource.fullHref)
-                guard let htmlString = String(data: zipResource.data, encoding: .utf8) else {
-                    Log.error("Blown it")
-                    exit(-1)
-                }
-                _uiController.load(html: htmlString)
-                break
-                //Log.info(htmlString)
+        _uiController.inject(css: displayCSS)
+
+        _uiController.resourceCallback = { path in
+            do {
+                let zipResource = try reader.readResource(path: path)
+                return zipResource.data
+            } catch let error {
+                Log.error(error.localizedDescription)
+                return nil
             }
         }
-        Log.info("Took \(timer.elapsed) sec")
+
+        guard let firstPage = book.spine.spineReferences[0].resource.fullHref else {
+            Log.error("Could not get reference for book section")
+            return nil
+        }
+        guard let firstPageURL = URL(string: firstPage, relativeTo: URL(string: "imprint://imprint/zipresource")!) else {
+            Log.error("Could not create URL for \(firstPage)")
+            return nil
+        }
+        Log.info("Loading from \(firstPageURL.path)")
+        uiController.load(url: firstPageURL)
+
     }
 
 }

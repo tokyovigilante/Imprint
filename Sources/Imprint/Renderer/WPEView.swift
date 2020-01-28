@@ -189,6 +189,11 @@ class WPEView {
         webkit_web_view_load_html(_view, string.cString(using: .utf8), nil)
     }
 
+    public func inject (css: String) {
+        let sheet = webkit_user_style_sheet_new(css, WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES, WEBKIT_USER_STYLE_LEVEL_USER, nil, nil)
+        webkit_user_content_manager_add_style_sheet(userContentManager, sheet)
+    }
+
     public func registerScriptHandler (name: String, delegate: ScriptMessageDelegate) -> Bool {
 
         g_signal_connect_data(userContentManager, "script-message-received::\(name)",
