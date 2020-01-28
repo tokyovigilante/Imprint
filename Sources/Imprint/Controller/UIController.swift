@@ -163,6 +163,10 @@ class UIController {
         _view.load(url: loaderPath)
     }
 
+        func load(html: String) {
+            _view.load(html: html)
+        }
+
     func handleUI(request: String) -> (mimeType: String, data: Data)? {
         Log.verbose("Got request for \(request)")
 
