@@ -19,10 +19,6 @@ let package = Package(
     ],
     targets: [
         .systemLibrary(
-            name: "CGTK",
-            pkgConfig: "gtk+-3.0"
-        ),
-        .systemLibrary(
             name: "CWebKitWPEFDO",
             pkgConfig: "wpebackend-fdo-1.0"
         ),
@@ -38,14 +34,6 @@ let package = Package(
                 "CWebKitWPEFDO",
                 "CWebKitWPE",
                 "Airframe",
-                "CGTK",
-                "ImprintCShims"
-            ]),
-        .target(
-            name: "ImprintCShims",
-            dependencies: [
-                "CGTK",
-                "Harness"
             ]),
         .target(
             name: "EPUBCore",

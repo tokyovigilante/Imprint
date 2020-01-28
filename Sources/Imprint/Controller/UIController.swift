@@ -104,7 +104,11 @@ class UIController {
         switch Int32(event.keyCode) {
         case XKB_KEY_o:
             if event.pressed && event.modifiers == InputModifier.control {
-                self.showOpenDialog()
+                //self.showOpenDialog()
+            }
+        case XKB_KEY_c:
+            if event.pressed && event.modifiers == InputModifier.control {
+                exit(0)
             }
         default:
             Log.debug("Unhandled: \(String(describing: event))")
@@ -212,12 +216,6 @@ class UIController {
             return nil
         }
         return ("application/json", json)*/
-    }
-
-    func showOpenDialog () {
-#if os(Linux)
-      let filePath = FileChooserGTK.run()
-#endif
     }
 
 }

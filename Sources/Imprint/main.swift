@@ -1,6 +1,5 @@
 import EPUBCore
 import Foundation
-import CGTK
 import Harness
 import LoggerAPI
 import ZipReader
@@ -17,9 +16,6 @@ ConsoleManager.redirectGLibLogging(for: [
         "libgnome",
         "gmime",
 ])
-
-gtk_init(nil, nil)
-
 
 signal(SIGINT) { _ in
     //merlin.stop()
