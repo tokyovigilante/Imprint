@@ -1,8 +1,19 @@
+import AEXML
 import Airframe
 import CWebKitWPE
 import Foundation
 import Harness
 import LoggerAPI
+
+var displayWrapperPreHTML = """
+    <?xml version='1.0' encoding='utf-8'?>
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        </head>
+        <body>
+        <div class="page">
+"""
 
 class UIController {
 
@@ -156,7 +167,90 @@ class UIController {
             return nil
         }
         Log.verbose("Loaded \(uiData.count) bytes from \(uiRequestURL)")
-        return (mimeType: mimeType, data: uiData)
+
+        if pathExtension == "html" || pathExtension == "xhtml" {
+            return (mimeType: "text/html", data: reparseHTML(data: uiData))
+        } else {
+            return (mimeType: mimeType, data: uiData)
+        }
+    }
+
+    func reparseHTML (data: Data) -> Data {
+        do {
+            let xmlDoc = try AEXMLDocument(xml: data)//, options: /*options*/)
+
+            for child in xmlDoc.root.children {
+                print(child.name)
+            }
+            let parsedString = displayWrapperPreHTML +
+                xmlDoc.root["body"].xmlCompact +
+                "</div></body></html>"
+            // prints cats, dogs
+            /*for child in xmlDoc.root["body"].xmlCompact {
+                print(child.xml)
+            }*/
+            /*
+            // prints Optional("Tinna") (first element)
+            print(xmlDoc.root["cats"]["cat"].value)
+
+            // prints Tinna (first element)
+            print(xmlDoc.root["cats"]["cat"].string)
+
+            // prints Optional("Kika") (last element)
+            print(xmlDoc.root["dogs"]["dog"].last?.value)
+
+            // prints Betty (3rd element)
+            print(xmlDoc.root["dogs"].children[2].string)
+
+            // prints Tinna, Rose, Caesar
+            if let cats = xmlDoc.root["cats"]["cat"].all {
+                for cat in cats {
+                    if let name = cat.value {
+                        print(name)
+                    }
+                }
+            }
+
+            // prints Villy, Spot
+            for dog in xmlDoc.root["dogs"]["dog"].all! {
+                if let color = dog.attributes["color"] {
+                    if color == "white" {
+                        print(dog.string)
+                    }
+                }
+            }
+
+            // prints Tinna
+            if let cats = xmlDoc.root["cats"]["cat"].all(withValue: "Tinna") {
+                for cat in cats {
+                    print(cat.string)
+                }
+            }
+
+            // prints Caesar
+            if let cats = xmlDoc.root["cats"]["cat"].all(withAttributes: ["breed" : "Domestic", "color" : "yellow"]) {
+                for cat in cats {
+                    print(cat.string)
+                }
+            }
+
+            // prints 4
+            print(xmlDoc.root["cats"]["cat"].count)
+
+            // prints Siberian
+            print(xmlDoc.root["cats"]["cat"].attributes["breed"]!)
+
+            // prints <cat breed="Siberian" color="lightgray">Tinna</cat>
+            print(xmlDoc.root["cats"]["cat"].xmlCompact)
+
+            // prints Optional(AEXML.AEXMLError.elementNotFound)
+            print(xmlDoc["NotExistingElement"].error)*/
+            return parsedString.data(using: .utf8)!
+        }
+        catch {
+            print("\(error)")
+        }
+        return data
     }
 
     func inject(css: String) {
